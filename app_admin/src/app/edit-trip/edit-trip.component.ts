@@ -12,6 +12,7 @@ export class EditTripComponent implements OnInit {
 
   editForm: FormGroup;
   submitted = false;
+  tripCode: string;
 
   constructor(
     private formBuilder: FormBuilder,

@@ -1,18 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 
+import { AuthResponse } from '../models/authresponse';
+import { BROWSER_STORAGE } from '../storage';
 import { Trip } from '../models/trip';
+import { User } from '../models/user';
 
 @Injectable()
 export class TripDataService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,
+    @Inject(BROWSER_STORAGE) private storage: Storage
+    ) { }
 
   private apiBaseUrl = 'http://localhost:3000/api/';
   private tripUrl = `${this.apiBaseUrl}trips/`;
 
   public addTrip(formData: Trip): Promise<Trip> {
     console.log('Inside TripDataService#addTrip');
+    const headers = new Headers({
+      "Content-Type":"application/json",
+      Authorization: `Bearer${localStorage.getItem("travlr-token")}`,
+    })
     return this.http
       .post(this.tripUrl, formData)
       .toPromise()
@@ -41,6 +50,10 @@ export class TripDataService {
   public updateTrip(formData: Trip): Promise<Trip> {
     console.log('Inside TripDataService#updateTrip');
     console.log(formData);
+    const headers = new Headers({
+      "Content-Type":"application/json",
+      Authorization: `Bearer${localStorage.getItem("travlr-token")}`,
+    })
     return this.http
       .put(this.tripUrl + formData.code, formData)
       .toPromise()
@@ -53,4 +66,20 @@ export class TripDataService {
     return Promise.reject(error.message || error);
   }
 
-}
+  public login(user: User): Promise<AuthResponse> {
+    return this.makeAuthApiCall('login', user);
+  }
+  
+  public register(user: User): Promise<AuthResponse> {
+    return this.makeAuthApiCall('register', user);
+  }
+  
+  private makeAuthApiCall(urlPath: string, user: User): Promise<AuthResponse> {
+    const url: string = `${this.apiBaseUrl}/${urlPath}`;
+    return this.http
+      .post(url, user)
+      .toPromise()
+      .then(response => response.json() as AuthResponse)
+      .catch(this.handleError);
+    }
+  }
