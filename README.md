@@ -1,1 +1,1 @@
-This is a mock travel website that i used to learn various web development skills.
+This is a mock travel website built using the MEAN stack.
