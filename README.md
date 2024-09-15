@@ -1,1 +1,1 @@
-# Travlr Ful-Stack Web App
+# Travlr Full-Stack Web App
