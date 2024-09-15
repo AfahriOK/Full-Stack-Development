@@ -1,4 +1,4 @@
-# Travlr Full-Stack Web App
+# Travlr Full-Stack Development
 # 1.Compare and contrast the types of front-end development you used in your full stack project, including Express HTML, JavaScript, and the single-page application (SPA).
 
 Each route in the Express application corresponded to a separate HTML file. Navigation between pages required full page reloads, with each navigation triggering a new request to the server.
